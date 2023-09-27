@@ -1,0 +1,33 @@
+---
+- name: Install packages
+  ansible.builtin.apt:
+    name:
+      - sssd-common
+      - sssd-proxy
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Copy proxy config
+  ansible.builtin.copy:
+    src: sssd.conf
+    dest: /etc/sssd/sssd.conf
+    mode: "700"
+
+- name: Remove SSSD from common PAM definition
+  ansible.builtin.lineinfile:
+    regexp: ".*pam_sss.so.*"
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /etc/pam.d/common-auth
+    - /etc/pam.d/common-session
+    - /etc/pam.d/common-account
+    - /etc/pam.d/common-password
+
+- name: Copy sss_proxy PAM module
+
+- name: Start SSSD servie
+  ansible.builtin.service:
+    name: sssd
+    state: started
+    enabled: true

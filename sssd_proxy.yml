@@ -1,0 +1,7 @@
+---
+- name: Install sssd proxy
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - sssd_proxy
