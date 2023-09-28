@@ -5,7 +5,6 @@
       - sssd-common
       - sssd-proxy
     state: present
-  when: ansible_pkg_mgr == 'apt'
 
 - name: Copy proxy config
   ansible.builtin.copy:
@@ -25,8 +24,12 @@
     - /etc/pam.d/common-password
 
 - name: Copy sss_proxy PAM module
+  ansible.builtin.copy:
+    src: sssd_proxy
+    dest: /etc/pam.d/sssd_proxy
+    mode: "644"
 
-- name: Start SSSD servie
+- name: Start SSSD service
   ansible.builtin.service:
     name: sssd
     state: started
