@@ -1,0 +1,4 @@
+auth	[success=2 default=ignore]    pam_exec.so log=/var/log/totp_auth.log quiet seteuid expose_authtok /usr/local/bin/totp_login.sh
+auth	requisite			pam_deny.so
+@include common-account
+@include common-session
